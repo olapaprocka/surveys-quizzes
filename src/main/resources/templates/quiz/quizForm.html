@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz!!!</title>
+</head>
+
+<body>
+
+<form method="post" th:action="@{/quiz}">
+    Nazwa QUIZ: <input type="text" name="quizName">
+    <br>
+    <input type="submit" value="Quiz">
+
+    <input type="submit" value="Zarejestruj">
+</form>
+
+</body>
+</html>

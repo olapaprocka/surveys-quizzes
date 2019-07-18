@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Surveys and Quizzes!</title>
+    <div th:replace="fragments/header :: header-libs"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<h1>Surveys and Quizzes!!</h1>
+
+<div sec:authorize="hasRole('USER')" >
+    Has role user
+</div>
+<div sec:authorize="hasRole('ADMIN')" >
+    Has role admin
+</div>
+
+Logged user: <span sec:authentication="name">Bob</span>
+Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+
+<!--<p th:if="${msg != null}" th:text="${msg}"></p>-->
+
+<p th:if="${@permissionService.isUserInAnyRole('ADMIN', 'USER')}">
+    Witaj zalogowany użytkowniku
+</p>
+
+<ol>
+    <li th:if="${@permissionService.isUser()}">
+        <a>Link dostępny dla usera</a>
+    </li>
+    <li th:if="${@permissionService.isAdmin()}">
+        <a th:href="@{/admin/users}">Edycja użytkowników</a>
+    </li>
+</ol>
+
+<span id="weather"></span>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+<script>
+    function refreshWeather() {
+        $.get('http://api.openweathermap.org/data/2.5/weather?q=Warsaw&appid=ea900b66f547fd7b23625544873a4200', function (data) {
+            console.log(data)
+            const weatherDescription = data.weather[0].description
+            $('#weather').text(`${new Date()} | ${weatherDescription}`)
+        })
+    }
+    $(document).ready(function () {
+        refreshWeather();
+        setInterval(refreshWeather, 5000)
+    });
+</script>
+
+</html>
